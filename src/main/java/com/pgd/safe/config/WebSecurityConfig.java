@@ -1,14 +1,13 @@
 package com.pgd.safe.config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.pgd.safe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
@@ -23,19 +22,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     DataSource dataSource;
+    @Autowired
+    UserService userService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        if(!manager.userExists("pgd")) {
-            manager.createUser(User.withUsername("pgd").password("{noop}123").roles("admin").build());
-        }
-        if(!manager.userExists("dongge")) {
-            manager.createUser(User.withUsername("dongge").password("{noop}123").roles("user").build());
-        }
-        auth.userDetailsService(manager);
+        // 配置自己的 user detail service
+        auth.userDetailsService(userService);
     }
 
+    /**
+     * 自带 jdbc user detail service
+     * @param http
+     * @throws Exception
+     */
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
+//        if(!manager.userExists("pgd")) {
+//            manager.createUser(User.withUsername("pgd").password("{noop}123").roles("admin").build());
+//        }
+//        if(!manager.userExists("dongge")) {
+//            manager.createUser(User.withUsername("dongge").password("{noop}123").roles("user").build());
+//        }
+//        auth.userDetailsService(manager);
+//    }
+
+    /**
+     * 自带内存 user detail service
+     * @param http
+     * @throws Exception
+     */
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
 //        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
