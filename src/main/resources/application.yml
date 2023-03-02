@@ -1,8 +1,13 @@
 server:
-  port: 8080
+  port: 80
+
 spring:
   security:
     user:
       name: pgd
-      password: 123
-      roles: admin,user
+      password: 123456
+
+  datasource:
+    username: zjftest
+    password: testdb!
+    url: jdbc:mysql://192.168.0.202:3306/mydb?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useAffectedRows=true
