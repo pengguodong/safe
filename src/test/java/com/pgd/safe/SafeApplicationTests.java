@@ -7,15 +7,23 @@ import com.pgd.safe.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
+//@SpringBootTest
 class SafeApplicationTests {
 
     @Autowired
     UserDao userDao;
+
+    @Test
+    public void testjm() {
+        PasswordEncoder pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        System.out.println(pe.encode("123456"));
+    }
 
     @Test
     void contextLoads() {
